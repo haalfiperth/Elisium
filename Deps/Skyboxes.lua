@@ -6,7 +6,7 @@ local Skyboxes = {
         SkyboxLf = "rbxassetid://1876543392",
         SkyboxRt = "rbxassetid://1876543764",
         SkyboxUp = "rbxassetid://1876544642"
-    }
+    },
     
     PurpleDay = {
         SkyboxBk = "rbxassetid://296908715",
