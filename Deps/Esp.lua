@@ -1,10 +1,10 @@
 setfpscap(32555555555555555)
 local Config = {
     Box = {
-        Enabled = true,
+        Enabled = false,
         Color = Color3.fromRGB(255, 255, 255),
         Filled = {
-            Enabled = true,
+            Enabled = false,
             Gradient = {
                 Enabled = true,
                 Color = {
@@ -14,7 +14,7 @@ local Config = {
                 Rotation = {
                     Amount = 1,
                     Moving = {
-                    	Enabled = true,
+                    	Enabled = false,
                         Speed = 300
                     },
                 },
@@ -42,11 +42,11 @@ local Config = {
         Width = 2.5,
         Lerp = 0.05,
         Moving = {
-            Enabled = true,
+            Enabled = false,
             Speed = 1
         },
         Health = {
-            Enabled = true,
+            Enabled = false,
             Color1 = Color3.fromRGB(0, 255, 0),
             Color2 = Color3.fromRGB(255, 255, 0),
             Color3 = Color3.fromRGB(255, 0, 0)
@@ -481,3 +481,4 @@ connections.main.RenderStepped =
 )
 
 return Config
+
