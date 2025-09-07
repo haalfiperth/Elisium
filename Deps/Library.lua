@@ -908,7 +908,7 @@ Elisium.Lucide = {
 	["lucide-menu"] = "rbxassetid://10734887784",
 	["lucide-message-circle"] = "rbxassetid://10734888000",
 	["lucide-message-square"] = "rbxassetid://10734888228",
-	["lucide-misc"] = "rbdassetid://8547256547",
+	["lucide-misc"] = "rbxassetid://8547256547",
 	["lucide-mic"] = "rbxassetid://10734888864",
 	["lucide-mic-2"] = "rbxassetid://10734888430",
 	["lucide-mic-off"] = "rbxassetid://10734888646",
@@ -9061,3 +9061,4 @@ end;
 
 
 return Elisium;
+
