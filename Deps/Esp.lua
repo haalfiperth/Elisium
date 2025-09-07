@@ -479,3 +479,5 @@ connections.main.RenderStepped =
         end
     end
 )
+
+return Config
