@@ -331,7 +331,7 @@ local CurrentCamera: Camera? = workspace.CurrentCamera;
 
 local Elisium = {
 	Version = 'Live',
-	Logo = "rbxassetid://96075093188795",
+	Logo = "rbxassetid://134208291863379",
 	Windows = {},
 	Scale = {
 		Window = UDim2.new(0, 460,0, 500),
@@ -343,8 +343,8 @@ local Elisium = {
 };
 
 Elisium.Colors = {
-	Highlight = Color3.fromRGB(189, 172, 255),
-	Toggle = Color3.fromRGB(189, 172, 255),
+	Highlight = Color3.fromRGB(173, 216, 230),
+	Toggle = Color3.fromRGB(173, 216, 230),
 	Risky = Color3.fromRGB(251, 255, 39),
 	BGDBColor = Color3.fromRGB(22, 24, 29),
 	BlockColor = Color3.fromRGB(28, 29, 34),
@@ -9058,5 +9058,6 @@ function Elisium.newNotify()
 
 	return Elisium.NOTIFY_CACHE;
 end;
+
 
 return Elisium;
