@@ -335,7 +335,7 @@ local Elisium = {
 	Windows = {},
 	Scale = {
 		Window = UDim2.new(0, 460,0, 500),
-		Mobile = UDim2.new(0, 350,0, 400),
+		Mobile = UDim2.new(0, 450,0, 375),
 		TabOpen = 185,
 		TabClose = 85,
 	},
@@ -381,6 +381,7 @@ Elisium.Lucide = {
 	['lucide-internet'] = "rbxassetid://12785195438",
 	['lucide-earth'] = "rbxassetid://115986292591138",
 	['lucide-settings-3'] = "rbxassetid://14007344336",
+	["lucide-anti-aim"] = "rbxassetid://6023426921",
 	["lucide-accessibility"] = "rbxassetid://10709751939",
 	["lucide-activity"] = "rbxassetid://10709752035",
 	["lucide-air-vent"] = "rbxassetid://10709752131",
@@ -9061,4 +9062,5 @@ end;
 
 
 return Elisium;
+
 
