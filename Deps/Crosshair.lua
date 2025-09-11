@@ -2,7 +2,7 @@ getgenv().crosshair = {
     enabled = false,
     refreshrate = 0,
     mode = 'Middle', -- Middle, Mouse, Custom
-    firsttext = "Antartica",
+    firsttext = "Elisium",
     secondtext = ".lol",
     position = Vector2.new(0, 0),
     lines = 4, -- Change this value to test different line counts
@@ -146,5 +146,6 @@ runservice.PostSimulation:Connect(function()
         end
     end
 end)
+
 
 return crosshair
