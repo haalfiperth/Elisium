@@ -388,7 +388,7 @@
                     ["{ping}"] = math.floor(Stats.PerformanceStats.Ping:GetValue() or 0),
                     ["{time}"] = os.date("%H:%M:%S"),
                     ["{date}"] = os.date("%b. %d, %Y"),
-                    ["{game}"] = Game and Game.Name or "Universal",
+                    ["{game}"] = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name,
                     ["{n}"] = "\n"
                 }
         
@@ -5112,7 +5112,7 @@
 
         function Library.Watermark(cfg)
             cfg = cfg or { }; cfg = Library.Config(cfg, {
-                text = "Lumora | {game} | {time} | {date}",
+                text = "Elisium.lol | {game} | {time} | {date}",
                 visible = true,
                 rate = 1 / 60,
             })
@@ -5363,3 +5363,4 @@
     
 
     return Library, Utility
+
