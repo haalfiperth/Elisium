@@ -359,7 +359,7 @@ utility.funcs.update =
 
         if Config.Bars.Health.Enabled and humanoid then
             local targetHealth = math.clamp(humanoid.Health / humanoid.MaxHealth, 0, 1)
-            local lastHealth = playerCache.Bars.Health.LastHealth or targetHealth
+            local lastHealth = targetHealth
             local lerpedHealth = lastHealth + (targetHealth - lastHealth) * Config.Bars.Lerp
             playerCache.Bars.Health.LastHealth = lerpedHealth
             local x = base_x - (bar_width + 4)
@@ -421,7 +421,7 @@ utility.funcs.update =
             local bodyEffects = character:FindFirstChild("BodyEffects")
             local values = bodyEffects and bodyEffects:FindFirstChild("Armor")
             local targetArmor = values and math.clamp(values.Value / 130, 0, 1) or 0
-            local lastArmor = playerCache.Bars.Armor.LastArmor or targetArmor
+            local lastArmor = targetArmor
             local lerpedArmor = lastArmor + (targetArmor - lastArmor) * Config.Bars.Lerp
             playerCache.Bars.Armor.LastArmor = lerpedArmor
             local x = base_x - (bar_width * 2 + 6 + 2)
@@ -481,4 +481,5 @@ connections.main.RenderStepped =
 )
 
 return Config
+
 
