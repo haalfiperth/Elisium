@@ -1,5 +1,6 @@
 getgenv().crosshair = {
     enabled = false,
+    text = true,
     refreshrate = 0,
     mode = 'Middle', -- Middle, Mouse, Custom
     firsttext = "Elisium",
@@ -101,8 +102,8 @@ runservice.PostSimulation:Connect(function()
         local text_1 = drawings.text.Text1
         local text_2 = drawings.text.Text2
 
-        text_1.Visible = crosshair.enabled
-        text_2.Visible = crosshair.enabled
+        text_1.Visible = crosshair.text
+        text_2.Visible = crosshair.text
 
         if crosshair.enabled then
             local text_x = text_1.TextBounds.X + text_2.TextBounds.X
@@ -149,3 +150,4 @@ end)
 
 
 return crosshair
+
