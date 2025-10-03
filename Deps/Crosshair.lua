@@ -102,15 +102,17 @@ runservice.PostSimulation:Connect(function()
         local text_1 = drawings.text.Text1
         local text_2 = drawings.text.Text2
 
-        text_1.Visible = crosshair.text and true or false
-        text_2.Visible = crosshair.text and true or false
+        text_1.Visible = crosshair.text
+        text_2.Visible = crosshair.text
 
-        if crosshair.enabled then
+        if crosshair.text then
             local text_x = text_1.TextBounds.X + text_2.TextBounds.X
             text_1.Position = position + Vector2.new(-text_x / 2, crosshair.radius + (crosshair.resize and crosshair.resize_max or crosshair.length) + 15)
             text_2.Position = text_1.Position + Vector2.new(text_1.TextBounds.X)
             text_2.Color = crosshair.color
+        end
 
+        if crosshair.enabled then
             for idx = 1, crosshair.lines do
                 local outline = drawings.crosshair[idx][1] -- Outline
                 local inline = drawings.crosshair[idx][2]  -- Inline
@@ -150,5 +152,3 @@ end)
 
 
 return crosshair
-
-
