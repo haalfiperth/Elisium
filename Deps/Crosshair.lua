@@ -1,6 +1,7 @@
 getgenv().crosshair = {
     enabled = false,
     text = false,
+    textpulse = false,
     refreshrate = 0,
     mode = 'Middle', -- Middle, Mouse, Custom
     firsttext = "Elisium",
@@ -158,4 +159,5 @@ end)
 
 
 return crosshair
+
 
