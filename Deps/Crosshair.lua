@@ -10,7 +10,8 @@ getgenv().crosshair = {
     width = 1.8,
     length = 15,
     radius = 11,
-    color = Color3.fromRGB(189,172,255),
+    color = Color3.fromRGB(189, 172, 255),
+    textcolor = Color3.fromRGB(189, 172, 255),
     spin = false,
     spin_speed = 150,
     spin_max = 340,
@@ -109,7 +110,12 @@ runservice.PostSimulation:Connect(function()
             local text_x = text_1.TextBounds.X + text_2.TextBounds.X
             text_1.Position = position + Vector2.new(-text_x / 2, crosshair.radius + (crosshair.resize and crosshair.resize_max or crosshair.length) + 15)
             text_2.Position = text_1.Position + Vector2.new(text_1.TextBounds.X)
-            text_2.Color = crosshair.color
+            text_2.Color = crosshair.textcolor
+        end
+
+        if crosshair.text and crosshair.textpulse then
+            local Sine = crosshair.textpulse and math.abs(math.sin(tick() * 4)) or 1 
+            text_1.Transparency = Sine
         end
 
         if crosshair.enabled then
@@ -152,3 +158,4 @@ end)
 
 
 return crosshair
+
