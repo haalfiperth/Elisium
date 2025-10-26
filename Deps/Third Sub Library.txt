@@ -2206,7 +2206,7 @@
             end
 
             Utility.Signal(UserInputService.InputBegan:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch and Popup.Objects.Outline.Visible and not Cog.InsideBounds(input) then
+                if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and Popup.Objects.Outline.Visible and not Cog.InsideBounds(input) then
                     Popup.Visible(false, Popup.Objects.Outline.AbsolutePosition)
 
                     Library.ChangeObjectTheme(Objects.Icon, {
@@ -2823,7 +2823,7 @@
             end))
 
             Utility.Signal(UserInputService.InputEnded:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch and Slider.Sliding then
+                if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and Slider.Sliding then
                     Slider.Sliding = false
                 end
             end))
@@ -3307,7 +3307,7 @@
                 end))
 
                 Utility.Signal(UserInputService.InputBegan:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch and Dropdown.Visible and not Utility.MouseOver(Popup.Outline, input) then
+                    if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and Dropdown.Visible and not Utility.MouseOver(Popup.Outline, input) then
                         Dropdown.Open()
                     end
                 end))
@@ -3768,7 +3768,7 @@
             end))
 
             Utility.Signal(UserInputService.InputBegan:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch and ColorpickerWindow.Visible and ColorpickerWindow.Flag == cfg.flag and not (Utility.MouseOver(ColorpickerWindow.Objects.Outline, input) or Utility.MouseOver(Objects.Outline, input)) then
+                if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and ColorpickerWindow.Visible and ColorpickerWindow.Flag == cfg.flag and not (Utility.MouseOver(ColorpickerWindow.Objects.Outline, input) or Utility.MouseOver(Objects.Outline, input)) then
                     ColorpickerWindow.Open( Objects.Outline.AbsolutePosition + Vector2.new(0, Objects.Outline.AbsoluteSize.Y + 2) )
                 end
             end))
@@ -4404,7 +4404,7 @@
             end))
 
             Utility.Signal(UserInputService.InputBegan:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch and Keybind.Visible and not (Utility.MouseOver(Popup.Outline, input) or Utility.MouseOver(Objects.Icon, input) or Utility.MouseOver(Popup.Dropdown.Popup.Outline, input)) then
+                if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and Keybind.Visible and not (Utility.MouseOver(Popup.Outline, input) or Utility.MouseOver(Objects.Icon, input) or Utility.MouseOver(Popup.Dropdown.Popup.Outline, input)) then
                     Keybind.Open()
                 end
             end))
@@ -5363,5 +5363,6 @@
     
 
     return Library, Utility
+
 
 
