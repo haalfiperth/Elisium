@@ -56,7 +56,7 @@ local Library do
             ["Page Background"] = FromRGB(30, 30, 30),
             ["Border"] = FromRGB(10, 10, 10),
             ["Outline"] = FromRGB(27, 27, 27),
-            ["Accent"] = FromRGB(86, 141, 214),
+            ["Accent"] = FromRGB(173, 216, 230),
             ["Element"] = FromRGB(33, 33, 33),
             ["Hovered Element"] = FromRGB(40, 40, 40),
             ["Text"] = FromRGB(215, 215, 215),
@@ -4898,5 +4898,6 @@ end
 
 getgenv().Library = Library
 setfpscap(240)
+
 
 return Library
