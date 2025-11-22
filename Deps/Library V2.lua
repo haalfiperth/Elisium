@@ -4779,12 +4779,20 @@ Window.Elements = Items
                 local Element = Dependency[1]
                 local RequiredValue = Dependency[2]
     
-                if Element.Class == "Toggle" then
+                -- Safety check
+                if not Element then
+                    warn("DependencyBox: Element is nil")
+                    continue
+                end
+    
+                local ElementClass = Element.Class or ""
+    
+                if ElementClass == "Toggle" then
                     if Element.Value ~= RequiredValue then
                         ShouldShow = false
                         break
                     end
-                elseif Element.Class == "Dropdown" then
+                elseif ElementClass == "Dropdown" then
                     if Element.Multi then
                         if type(RequiredValue) == "table" then
                             local HasAll = true
@@ -4808,7 +4816,7 @@ Window.Elements = Items
                             break
                         end
                     end
-                elseif Element.Class == "Slider" then
+                elseif ElementClass == "Slider" then
                     if type(RequiredValue) == "table" then
                         if Element.Value < RequiredValue[1] or Element.Value > RequiredValue[2] then
                             ShouldShow = false
@@ -4818,12 +4826,12 @@ Window.Elements = Items
                         ShouldShow = false
                         break
                     end
-                elseif Element.Class == "Keybind" then
+                elseif ElementClass == "Keybind" then
                     if Element.Toggled ~= RequiredValue then
                         ShouldShow = false
                         break
                     end
-                elseif Element.Class == "Input" or Element.Class == "Textbox" then
+                elseif ElementClass == "Input" or ElementClass == "Textbox" then
                     if Element.Value ~= RequiredValue then
                         ShouldShow = false
                         break
@@ -4833,10 +4841,6 @@ Window.Elements = Items
     
             DependencyBox.Visible = ShouldShow
             Items["DependencyBox"].Instance.Visible = ShouldShow
-            
-            if DependencyBox.Section.Resize then
-                DependencyBox.Section:Resize()
-            end
         end
     
         function DependencyBox:SetupDependencies(NewDependencies)
@@ -4845,51 +4849,72 @@ Window.Elements = Items
         end
     
         function DependencyBox:AddDependency(Element, Value)
-            table.insert(DependencyBox.Dependencies, {Element, Value})
+            TableInsert(DependencyBox.Dependencies, {Element, Value})
             DependencyBox:Update()
         end
     
+        -- Hook into dependency elements to update when they change
         for _, Dependency in DependencyBox.Dependencies do
             local Element = Dependency[1]
             
-            if Element.Class == "Toggle" then
-                local OriginalSetValue = Element.SetValue
-                Element.SetValue = function(...)
-                    OriginalSetValue(...)
-                    DependencyBox:Update()
-                end
-            elseif Element.Class == "Dropdown" then
+            if not Element then
+                warn("DependencyBox: Attempting to hook nil element")
+                continue
+            end
+    
+            local ElementClass = Element.Class or ""
+            
+            if ElementClass == "Toggle" then
                 local OriginalSet = Element.Set
-                Element.Set = function(...)
-                    OriginalSet(...)
-                    DependencyBox:Update()
+                if OriginalSet then
+                    Element.Set = function(self, Bool)
+                        OriginalSet(self, Bool)
+                        DependencyBox:Update()
+                    end
                 end
-            elseif Element.Class == "Slider" then
-                local OriginalSetValue = Element.SetValue
-                Element.SetValue = function(...)
-                    OriginalSetValue(...)
-                    DependencyBox:Update()
+            elseif ElementClass == "Dropdown" then
+                local OriginalSet = Element.Set
+                if OriginalSet then
+                    Element.Set = function(self, Option)
+                        OriginalSet(self, Option)
+                        DependencyBox:Update()
+                    end
                 end
-            elseif Element.Class == "Keybind" then
+            elseif ElementClass == "Slider" then
+                local OriginalSet = Element.Set
+                if OriginalSet then
+                    Element.Set = function(self, Value)
+                        OriginalSet(self, Value)
+                        DependencyBox:Update()
+                    end
+                end
+            elseif ElementClass == "Keybind" then
                 local OriginalPress = Element.Press
-                Element.Press = function(...)
-                    OriginalPress(...)
-                    DependencyBox:Update()
+                if OriginalPress then
+                    Element.Press = function(self, Bool)
+                        OriginalPress(self, Bool)
+                        DependencyBox:Update()
+                    end
                 end
-            elseif Element.Class == "Input" or Element.Class == "Textbox" then
-                local OriginalSetValue = Element.SetValue
-                Element.SetValue = function(...)
-                    OriginalSetValue(...)
-                    DependencyBox:Update()
+            elseif ElementClass == "Input" or ElementClass == "Textbox" then
+                local OriginalSet = Element.Set
+                if OriginalSet then
+                    Element.Set = function(self, Value)
+                        OriginalSet(self, Value)
+                        DependencyBox:Update()
+                    end
                 end
             end
         end
     
-        DependencyBox.Elements = Items
-        DependencyBox.Container = Items["DependencyBox"]
+        -- Override the Elements table to point to the DependencyBox container
+        DependencyBox.Elements = {
+            Content = Items["DependencyBox"]
+        }
         
         DependencyBox:Update()
         
+        -- Set metatable to inherit Section methods
         setmetatable(DependencyBox, Library.Sections)
         
         return DependencyBox
@@ -4901,3 +4926,4 @@ setfpscap(240)
 
 
 return Library
+
