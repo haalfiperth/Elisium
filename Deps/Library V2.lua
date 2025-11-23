@@ -5646,7 +5646,8 @@ local Library do
             Name = Data.Name or Data.name or "Toggle",
             Flag = Data.Flag or Data.flag or Library:NextFlag(),
             Default = Data.Default or Data.default or false,
-            Callback = Data.Callback or Data.callback or function() end
+            Callback = Data.Callback or Data.callback or function() end,
+            Class = "Toggle"
         }
 
         local NewToggle, ToggleItems = Components:Toggle({
@@ -5745,6 +5746,7 @@ local Library do
             Max = Data.Max or Data.max or 100,
             Default = Data.Default or Data.Default or 0,
             Callback = Data.Callback or Data.callback or function() end,
+            Class = "Slider"
         }
 
         local NewSlider, SliderItems = Components:Slider({
@@ -5787,7 +5789,8 @@ local Library do
             Items = Data.Items or Data.items or { },
             Default = Data.Default or Data.default or nil,
             Multi = Data.Multi or Data.multi or false,
-            Callback = Data.Callback or Data.callback or function() end            
+            Callback = Data.Callback or Data.callback or function() end,
+            Class = "Dropdown"
         }
 
         local NewDropdown, DropdownItems = Components:Dropdown({
@@ -5914,6 +5917,7 @@ local Library do
             Finished = Data.Finished or Data.finished or false,
             Placeholder = Data.Placeholder or Data.placeholder or "...",
             Callback = Data.Callback or Data.callback or function() end,
+            Class = "Textbox"
         }
 
         local NewTextbox, TextboxItems = Components:Textbox({
@@ -5946,14 +5950,13 @@ local Library do
         local DependencyBox = {
             Window = self.Window,
             Page = self.Page,
-            Section = self,  -- Changed: self is already the Section
+            Section = self,
             
             Dependencies = Dependencies or {},
             Items = {},
             Visible = true
         }
     
-        -- Find the correct parent - self is the Section, so use self.Items["Content"]
         local ParentContent = self.Items and self.Items["Content"] and self.Items["Content"].Instance
     
         if not ParentContent then
@@ -5970,7 +5973,7 @@ local Library do
                 BorderColor3 = FromRGB(0, 0, 0),
                 BorderSizePixel = 0,
                 AutomaticSize = Enum.AutomaticSize.Y,
-                Visible = true,
+                Visible = false,
                 BackgroundColor3 = FromRGB(255, 255, 255)
             })
     
@@ -5980,7 +5983,6 @@ local Library do
                 SortOrder = Enum.SortOrder.LayoutOrder
             })
             
-            -- IMPORTANT: Set Content to point to DependencyBox so child elements work
             Items["Content"] = Items["DependencyBox"]
         end
     
@@ -5991,7 +5993,6 @@ local Library do
                 local Element = Dependency[1]
                 local RequiredValue = Dependency[2]
     
-                -- Safety check
                 if not Element then
                     warn("DependencyBox: Element is nil")
                     continue
@@ -6049,7 +6050,6 @@ local Library do
                         break
                     end
                 elseif ElementClass == "Colorpicker" then
-                    -- For colorpickers, you might want to check alpha or specific color values
                     if type(RequiredValue) == "table" then
                         if Element.Alpha < RequiredValue.MinAlpha or Element.Alpha > RequiredValue.MaxAlpha then
                             ShouldShow = false
@@ -6073,7 +6073,6 @@ local Library do
             DependencyBox:Update()
         end
     
-        -- Hook into dependency elements to update when they change
         for _, Dependency in DependencyBox.Dependencies do
             local Element = Dependency[1]
             
@@ -6135,12 +6134,13 @@ local Library do
             end
         end
         
-        -- Store items for child elements to use
         DependencyBox.Items = Items
         
-        DependencyBox:Update()
+        task.spawn(function()
+            task.wait()
+            DependencyBox:Update()
+        end)
         
-        -- Return with Library.Sections metatable so child elements can be added
         return setmetatable(DependencyBox, Library.Sections)
     end
 
@@ -6228,3 +6228,4 @@ end
 
 
 return Library
+
