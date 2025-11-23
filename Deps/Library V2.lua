@@ -5954,7 +5954,7 @@ local Library do
             
             Dependencies = Dependencies or {},
             Items = {},
-            Visible = true
+            Visible = false
         }
     
         local ParentContent = self.Items and self.Items["Content"] and self.Items["Content"].Instance
@@ -6228,4 +6228,5 @@ end
 
 
 return Library
+
 
