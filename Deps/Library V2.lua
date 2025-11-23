@@ -5946,16 +5946,24 @@ local Library do
         local DependencyBox = {
             Window = self.Window,
             Page = self.Page,
-            Section = self,
+            Section = self,  -- Changed: self is already the Section
             
             Dependencies = Dependencies or {},
-            Elements = {},
+            Items = {},
             Visible = true
         }
     
+        -- Find the correct parent - self is the Section, so use self.Items["Content"]
+        local ParentContent = self.Items and self.Items["Content"] and self.Items["Content"].Instance
+    
+        if not ParentContent then
+            error("DependencyBox: Could not find parent content. Make sure you're calling DependencyBox on a Section.")
+            return
+        end
+    
         local Items = {} do
             Items["DependencyBox"] = Instances:Create("Frame", {
-                Parent = DependencyBox.Section.Items["Content"].Instance,
+                Parent = ParentContent,
                 Name = "\0",
                 BackgroundTransparency = 1,
                 Size = UDim2New(1, 0, 0, 0),
@@ -5971,6 +5979,9 @@ local Library do
                 Padding = UDimNew(0, 8),
                 SortOrder = Enum.SortOrder.LayoutOrder
             })
+            
+            -- IMPORTANT: Set Content to point to DependencyBox so child elements work
+            Items["Content"] = Items["DependencyBox"]
         end
     
         function DependencyBox:Update()
@@ -5979,7 +5990,8 @@ local Library do
             for _, Dependency in DependencyBox.Dependencies do
                 local Element = Dependency[1]
                 local RequiredValue = Dependency[2]
-                
+    
+                -- Safety check
                 if not Element then
                     warn("DependencyBox: Element is nil")
                     continue
@@ -6123,10 +6135,12 @@ local Library do
             end
         end
         
+        -- Store items for child elements to use
         DependencyBox.Items = Items
         
         DependencyBox:Update()
         
+        -- Return with Library.Sections metatable so child elements can be added
         return setmetatable(DependencyBox, Library.Sections)
     end
 
@@ -6211,5 +6225,6 @@ local Library do
         return BlankElement, Items
     end
 end
+
 
 return Library
