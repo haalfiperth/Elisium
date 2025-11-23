@@ -5807,10 +5807,20 @@ local Library do
             Elements = {},
             Visible = false
         }
+        
+        local ParentFrame
+        if self.Elements and self.Elements["Content"] then
+            ParentFrame = self.Elements["Content"].Instance
+        elseif self.Section and self.Section.Elements and self.Section.Elements["Content"] then
+            ParentFrame = self.Section.Elements["Content"].Instance
+        else
+            warn("DependencyBox: Could not find parent Content frame")
+            return nil
+        end
     
         local Items = { } do
             Items["DependencyBox"] = Instances:Create("Frame", {
-                Parent = DependencyBox.Section.Elements["Content"].Instance,
+                Parent = ParentFrame,
                 Name = "\0",
                 BackgroundTransparency = 1,
                 Size = UDim2New(1, 0, 0, 0),
@@ -5826,6 +5836,8 @@ local Library do
                 Padding = UDimNew(0, 6),
                 SortOrder = Enum.SortOrder.LayoutOrder
             })
+            
+            Items["Content"] = Items["DependencyBox"]
         end
     
         function DependencyBox:Update()
@@ -5891,7 +5903,6 @@ local Library do
             Items["DependencyBox"].Instance.Visible = ShouldShow
         end
     
-        -- Hook into each dependency element's Set/Press function
         for _, Dependency in DependencyBox.Dependencies do
             local Element = Dependency[1]
             
@@ -5930,11 +5941,10 @@ local Library do
     
         DependencyBox.Elements = Items
         
-        -- Initial update
         DependencyBox:Update()
         
         return setmetatable(DependencyBox, Library.Sections)
-    end
+	end
 
     Library.Sections.Button = function(self)
         local Button = {
@@ -6248,5 +6258,6 @@ end
 
 
 return Library
+
 
 
