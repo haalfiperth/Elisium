@@ -5797,53 +5797,143 @@ local Library do
         return NewToggle
     end
     
-    Library.Sections.Dependency = function(self, Dependencies)
+    Library.Sections.DependencyBox = function(self, Dependencies)
         local DependencyBox = {
             Window = self.Window,
             Page = self.Page,
             Section = self,
-            Items = {}
+            
+            Dependencies = Dependencies or {},
+            Elements = {},
+            Visible = false
         }
-        
-        local Items = {} do
-            Items["Container"] = Instances:Create("Frame", {
-                Parent = self.Items["Content"].Instance,
+    
+        local Items = { } do
+            Items["DependencyBox"] = Instances:Create("Frame", {
+                Parent = DependencyBox.Section.Elements["Content"].Instance,
                 Name = "\0",
                 BackgroundTransparency = 1,
-                BorderColor3 = FromRGB(0, 0, 0),
                 Size = UDim2New(1, 0, 0, 0),
+                BorderColor3 = FromRGB(0, 0, 0),
                 BorderSizePixel = 0,
                 AutomaticSize = Enum.AutomaticSize.Y,
-                BackgroundColor3 = FromRGB(255, 255, 255),
-                Visible = false
+                Visible = false,
+                BackgroundColor3 = FromRGB(255, 255, 255)
             })
-            
+    
             Instances:Create("UIListLayout", {
-                Parent = Items["Container"].Instance,
-                Name = "\0",
-                Padding = UDimNew(0, 8),
+                Parent = Items["DependencyBox"].Instance,
+                Padding = UDimNew(0, 6),
                 SortOrder = Enum.SortOrder.LayoutOrder
             })
         end
-        
-        DependencyBox.Items = Items
-        
-        local DependencySection = {
-            Window = DependencyBox.Window,
-            Page = DependencyBox.Page,
-            Section = DependencyBox,
-            Items = {
-                Content = Items["Container"] 
-            }
-        }
-        
-        Library:CreateDependency(DependencyBox, Dependencies)
-        
-        function DependencyBox:SetVisibility(Bool)
-            Items["Container"].Instance.Visible = Bool
+    
+        function DependencyBox:Update()
+            local ShouldShow = true
+    
+            for _, Dependency in DependencyBox.Dependencies do
+                local Element = Dependency[1]
+                local RequiredValue = Dependency[2]
+    
+                if Element.Class == "Toggle" then
+                    if Element.Value ~= RequiredValue then
+                        ShouldShow = false
+                        break
+                    end
+                elseif Element.Class == "Dropdown" then
+                    if Element.Multi then
+                        if type(RequiredValue) == "table" then
+                            local HasMatch = false
+                            for _, Val in RequiredValue do
+                                if TableFind(Element.Value, Val) then
+                                    HasMatch = true
+                                    break
+                                end
+                            end
+                            if not HasMatch then
+                                ShouldShow = false
+                                break
+                            end
+                        elseif not TableFind(Element.Value, RequiredValue) then
+                            ShouldShow = false
+                            break
+                        end
+                    else
+                        if Element.Value ~= RequiredValue then
+                            ShouldShow = false
+                            break
+                        end
+                    end
+                elseif Element.Class == "Slider" then
+                    if type(RequiredValue) == "table" then
+                        if Element.Value < RequiredValue[1] or Element.Value > RequiredValue[2] then
+                            ShouldShow = false
+                            break
+                        end
+                    elseif Element.Value ~= RequiredValue then
+                        ShouldShow = false
+                        break
+                    end
+                elseif Element.Class == "Keybind" then
+                    if Element.Toggled ~= RequiredValue then
+                        ShouldShow = false
+                        break
+                    end
+                elseif Element.Class == "Textbox" then
+                    if Element.Value ~= RequiredValue then
+                        ShouldShow = false
+                        break
+                    end
+                end
+            end
+    
+            DependencyBox.Visible = ShouldShow
+            Items["DependencyBox"].Instance.Visible = ShouldShow
         end
+    
+        -- Hook into each dependency element's Set/Press function
+        for _, Dependency in DependencyBox.Dependencies do
+            local Element = Dependency[1]
+            
+            if Element.Class == "Toggle" then
+                local OriginalSet = Element.Set
+                Element.Set = function(ElementSelf, ...)
+                    OriginalSet(ElementSelf, ...)
+                    DependencyBox:Update()
+                end
+            elseif Element.Class == "Dropdown" then
+                local OriginalSet = Element.Set
+                Element.Set = function(ElementSelf, ...)
+                    OriginalSet(ElementSelf, ...)
+                    DependencyBox:Update()
+                end
+            elseif Element.Class == "Slider" then
+                local OriginalSet = Element.Set
+                Element.Set = function(ElementSelf, ...)
+                    OriginalSet(ElementSelf, ...)
+                    DependencyBox:Update()
+                end
+            elseif Element.Class == "Keybind" then
+                local OriginalPress = Element.Press
+                Element.Press = function(ElementSelf, ...)
+                    OriginalPress(ElementSelf, ...)
+                    DependencyBox:Update()
+                end
+            elseif Element.Class == "Textbox" then
+                local OriginalSet = Element.Set
+                Element.Set = function(ElementSelf, ...)
+                    OriginalSet(ElementSelf, ...)
+                    DependencyBox:Update()
+                end
+            end
+        end
+    
+        DependencyBox.Elements = Items
         
-        return setmetatable(DependencySection, Library.Sections)
+        -- Initial update
+        DependencyBox:Update()
+        
+        return setmetatable(DependencyBox, Library.Sections)
     end
 
     Library.Sections.Button = function(self)
@@ -6158,4 +6248,5 @@ end
 
 
 return Library
+
 
