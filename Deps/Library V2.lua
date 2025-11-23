@@ -5815,7 +5815,7 @@ local Library do
                 BorderSizePixel = 0,
                 AutomaticSize = Enum.AutomaticSize.Y,
                 BackgroundColor3 = FromRGB(255, 255, 255),
-                Visible = true
+                Visible = false
             })
             
             Instances:Create("UIListLayout", {
@@ -5833,7 +5833,7 @@ local Library do
             Page = DependencyBox.Page,
             Section = DependencyBox,
             Items = {
-                Content = Items["Container"]  -- Make sure this returns the instance properly
+                Content = Items["Container"] 
             }
         }
         
@@ -6158,3 +6158,4 @@ end
 
 
 return Library
+
