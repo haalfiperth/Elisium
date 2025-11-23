@@ -5807,7 +5807,7 @@ local Library do
         
         local Items = {} do
             Items["Container"] = Instances:Create("Frame", {
-                Parent = DependencyBox.Section.Items["Content"],
+                Parent = self.Items["Content"].Instance,
                 Name = "\0",
                 BackgroundTransparency = 1,
                 BorderColor3 = FromRGB(0, 0, 0),
@@ -5833,7 +5833,7 @@ local Library do
             Page = DependencyBox.Page,
             Section = DependencyBox,
             Items = {
-                Content = Items["Container"]
+                Content = Items["Container"]  -- Make sure this returns the instance properly
             }
         }
         
@@ -6155,5 +6155,6 @@ local Library do
         return BlankElement, Items
     end
 end
+
 
 return Library
