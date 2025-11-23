@@ -5807,16 +5807,8 @@ local Library do
             Elements = {},
             Visible = false
         }
-        
-        local ParentFrame
-        if self.Elements and self.Elements["Content"] then
-            ParentFrame = self.Elements["Content"].Instance
-        elseif self.Section and self.Section.Elements and self.Section.Elements["Content"] then
-            ParentFrame = self.Section.Elements["Content"].Instance
-        else
-            warn("DependencyBox: Could not find parent Content frame")
-            return nil
-        end
+    
+        local ParentFrame = self.Elements["Content"].Instance
     
         local Items = { } do
             Items["DependencyBox"] = Instances:Create("Frame", {
@@ -5941,11 +5933,20 @@ local Library do
     
         DependencyBox.Elements = Items
         
+        DependencyBox.Toggle = Library.Sections.Toggle
+        DependencyBox.Button = Library.Sections.Button
+        DependencyBox.Slider = Library.Sections.Slider
+        DependencyBox.Dropdown = Library.Sections.Dropdown
+        DependencyBox.Label = Library.Sections.Label
+        DependencyBox.Textbox = Library.Sections.Textbox
+        DependencyBox.Listbox = Library.Sections.Listbox
+        DependencyBox.Divider = Library.Sections.Divider
+        
         DependencyBox:Update()
         
-        return setmetatable(DependencyBox, Library.Sections)
-	end
-
+        return DependencyBox
+    end
+			
     Library.Sections.Button = function(self)
         local Button = {
             Window = self.Window,
@@ -6258,6 +6259,7 @@ end
 
 
 return Library
+
 
 
 
