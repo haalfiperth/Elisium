@@ -1,8 +1,10 @@
+local Drawing = loadstring(game:HttpGet('https://raw.githubusercontent.com/LionTheGreatRealFrFr/Assets/refs/heads/main/DrawingLib'))()
+
 getgenv().crosshair = {
     enabled = false,
-    text = true,
+    text = false,
     textcolor = Color3.fromRGB(189, 172, 255),
-    indicator = true,
+    indicator = false,
     indicatortext = "Unsafe",
     textsize = 14,
     textoffset = 75,
@@ -116,9 +118,11 @@ runservice.PostSimulation:Connect(function()
         if crosshair.text then
             text.Position = Vector2.new(center.X, center.Y + crosshair.textoffset)
             text.Color = crosshair.textcolor
+            text.Size = crosshair.textsize
             
             indicator.Text = crosshair.indicatortext
             indicator.Position = Vector2.new(center.X, center.Y + crosshair.textoffset + 15)
+            indicator.Size = crosshair.textsize
         end
         
         if crosshair.enabled then
@@ -160,3 +164,4 @@ runservice.PostSimulation:Connect(function()
 end)
 
 return crosshair
+
