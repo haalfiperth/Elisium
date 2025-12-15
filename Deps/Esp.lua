@@ -21,7 +21,7 @@ local Config = {
         }
     },
     Text = {
-        Font = "Tahoma Bold",
+        Font = "Proggy Clean",
         Name = {
             Enabled = false,
             Color = Color3.fromRGB(255, 255, 255),
@@ -29,7 +29,7 @@ local Config = {
             Casing = "lowercase"
         },
         Weapon = {
-            Enabled = true,
+            Enabled = false,
             Color = Color3.fromRGB(255, 255, 255),
             Casing = "lowercase"
         },
@@ -212,6 +212,7 @@ utility.funcs.make_text = function(p)
     d.TextSize = 10
     d.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
     d.FontFace = Fonts[Config.Text.Font]
+    d.Text = ""
     return d
 end
 
@@ -786,5 +787,6 @@ connections.main.RenderStepped =
         end
     end
 )
+
 
 return Config
